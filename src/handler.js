@@ -89,16 +89,12 @@ const getBooksHandler = (req) => {
     } else {
       books = books.filter((b) => b.reading === false);
     }
-    // const isReading = (reading === '1');
-    // books.filter((b) => b.reading === isReading);
   } else if (finished !== undefined) {
     if (finished === '1') {
       books = books.filter((b) => b.finished === true);
     } else {
       books = books.filter((b) => b.finished === false);
     }
-    // const isFinished = (finished === '1');
-    // books.filter((b) => b.finished === isFinished);
   }
 
   const allBooks = [];
