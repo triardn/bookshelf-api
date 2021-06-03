@@ -77,4 +77,32 @@ const addBookHandler = (req, h) => {
   return response;
 };
 
-module.exports = { addBookHandler };
+const getBooksHandler = () => ({
+  status: 'success',
+  data: {
+    books: bookshelf,
+  },
+});
+
+const getBookByIDHandler = (req, h) => {
+  const { id } = req.params;
+
+  const book = bookshelf.filter((n) => n.id === id)[0];
+  if (book !== undefined) {
+    return {
+      status: 'success',
+      data: { book },
+    };
+  }
+
+  const response = h.response({
+    status: 'fail',
+    message: 'Buku tidak ditemukan',
+  });
+
+  response.code(404);
+
+  return response;
+};
+
+module.exports = { addBookHandler, getBooksHandler, getBookByIDHandler };
