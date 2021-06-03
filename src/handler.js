@@ -58,7 +58,7 @@ const addBookHandler = (req, h) => {
       status: 'success',
       message: 'Buku berhasil ditambahkan',
       data: {
-        noteId: id,
+        bookId: id,
       },
     });
 
@@ -171,6 +171,32 @@ const editBookHandler = (req, h) => {
   return response;
 };
 
+const deleteBookHandler = (req, h) => {
+  const { id } = req.params;
+  const index = bookshelf.findIndex((n) => n.id === id);
+
+  if (index !== -1) {
+    bookshelf.splice(index, 1);
+    const response = h.response({
+      status: 'success',
+      message: 'Buku berhasil dihapus',
+    });
+
+    response.code(200);
+
+    return response;
+  }
+
+  const response = h.response({
+    status: 'fail',
+    message: 'Buku gagal dihapus. Id tidak ditemukan',
+  });
+
+  response.code(404);
+
+  return response;
+};
+
 module.exports = {
-  addBookHandler, getBooksHandler, getBookByIDHandler, editBookHandler,
+  addBookHandler, getBooksHandler, getBookByIDHandler, editBookHandler, deleteBookHandler,
 };
