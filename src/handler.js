@@ -30,9 +30,9 @@ const addBookHandler = (req, h) => {
   }
 
   const id = nanoid(16);
-  const isFinishedReading = pageCount === readPage;
-  const createdAt = new Date().toISOString();
-  const updatedAt = createdAt;
+  const finished = pageCount === readPage;
+  const insertedAt = new Date().toISOString();
+  const updatedAt = insertedAt;
 
   const insertBook = {
     name,
@@ -44,8 +44,8 @@ const addBookHandler = (req, h) => {
     readPage,
     reading,
     id,
-    isFinishedReading,
-    createdAt,
+    finished,
+    insertedAt,
     updatedAt,
   };
 
@@ -77,12 +77,25 @@ const addBookHandler = (req, h) => {
   return response;
 };
 
-const getBooksHandler = () => ({
-  status: 'success',
-  data: {
-    books: bookshelf,
-  },
-});
+const getBooksHandler = () => {
+  const allBooks = [];
+  for (let i = 0; i < bookshelf.length; i += 1) {
+    const { id, name, publisher } = bookshelf[i];
+
+    const tempObj = {
+      id, name, publisher,
+    };
+
+    allBooks.push(tempObj);
+  }
+
+  return {
+    status: 'success',
+    data: {
+      books: allBooks,
+    },
+  };
+};
 
 const getBookByIDHandler = (req, h) => {
   const { id } = req.params;
