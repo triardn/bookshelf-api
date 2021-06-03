@@ -77,9 +77,32 @@ const addBookHandler = (req, h) => {
   return response;
 };
 
-const getBooksHandler = () => {
+const getBooksHandler = (req) => {
+  const { name, reading, finished } = req.query;
+
+  let books = bookshelf;
+  if (name !== undefined) {
+    books = books.filter((b) => b.name.toLowerCase().includes(name.toLowerCase()));
+  } else if (reading !== undefined) {
+    if (reading === '1') {
+      books = books.filter((b) => b.reading === true);
+    } else {
+      books = books.filter((b) => b.reading === false);
+    }
+    // const isReading = (reading === '1');
+    // books.filter((b) => b.reading === isReading);
+  } else if (finished !== undefined) {
+    if (finished === '1') {
+      books = books.filter((b) => b.finished === true);
+    } else {
+      books = books.filter((b) => b.finished === false);
+    }
+    // const isFinished = (finished === '1');
+    // books.filter((b) => b.finished === isFinished);
+  }
+
   const allBooks = [];
-  for (let i = 0; i < bookshelf.length; i += 1) {
+  for (let i = 0; i < books.length; i += 1) {
     const { id, name, publisher } = bookshelf[i];
 
     const tempObj = {
